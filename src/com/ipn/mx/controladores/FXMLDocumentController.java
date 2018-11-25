@@ -104,11 +104,6 @@ public class FXMLDocumentController implements Initializable {
         int inicial = 0x00 + porcentaje;
         return (byte) inicial;
     }
-    
-    public void pruebaBranch(){
-        System.out.println("hola");
-        
-    }
 
 //    public static int convert(int n) {
 //        return Integer.valueOf(String.valueOf(n), 16);
