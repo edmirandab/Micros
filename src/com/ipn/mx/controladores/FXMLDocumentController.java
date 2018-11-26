@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ipn.mx.controladores;
 
 import com.ipn.mx.serial.ControladorSerial;
@@ -10,15 +5,19 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import jssc.SerialPort;
 
 /**
  *
@@ -26,51 +25,116 @@ import javafx.scene.control.TextField;
  */
 public class FXMLDocumentController implements Initializable {
 
-    List<Byte> flujoBytes = new ArrayList<>();
-    ControladorSerial cs = new ControladorSerial();
+    private List<Byte> flujoBytes = new ArrayList<>();
+    private ControladorSerial cs = new ControladorSerial();
+    private SerialPort puertoDestino;
+    private SerialPort puertoLectura;
 
     @FXML
     private Label labelResultado;
     @FXML
-    private Label label;
-    @FXML
     private ComboBox<Integer> tf_RPM;
-    @FXML
-    private TextField tf_RPS;
-    @FXML
-    private TextField tf_Hz;
     @FXML
     private TextField tf_Secuencia;
     @FXML
     private Button botonTransferir;
     @FXML
     private ComboBox<String> menu_Direccion;
+    @FXML
+    private ComboBox<String> comboBoxPuertosDisponibles;
+    @FXML
+    private Label labelPuertoElegido;
+    @FXML
+    private Button botonLeerPuerto;
+    @FXML
+    private Button botonPuertosDisponibles;
+    @FXML
+    private Label puertosEstado;
+    @FXML
+    private Label labelDatosLeidos;
+    @FXML
+    private ComboBox<String> comboBoxPuertosDisponiblesEscuchar;
+    @FXML
+    private Label escuchandoPuertoLabel;
+    @FXML
+    private Label datosAEnviar;
 
     @FXML
-    private void handleButtonAction(ActionEvent event) {
+    private void enviarDatosAPuerto(ActionEvent event) {
         int porcentajeVelocidad = tf_RPM.getValue();
         String direccion = menu_Direccion.getValue();
-//        labelResultado.setText("Velocidad en byte: " + muxDireccion(direccion));
-//        System.out.println("\nDirección (byte): " + muxDireccion(direccion)
-//                + ", Velocidad (byte): " + muxVelocidad(porcentajeVelocidad));
+        System.out.println("\nEntra: " + muxDireccion(direccion) + " " + muxVelocidad(porcentajeVelocidad));
         flujoBytes.add(muxDireccion(direccion));
         flujoBytes.add(muxVelocidad(porcentajeVelocidad));
-        byte[] datos = new byte[flujoBytes.size()-1];
+        byte[] datos = new byte[flujoBytes.size()];
         int i = 0;
         for (byte elementoFlujo : flujoBytes) {
             datos[i] = elementoFlujo;
             i++;
         }
-        String[]puertosEncontrados = cs.obtenerPuertosDisponibles();
+        datosAEnviar.setText("Dirección en byte: " + muxDireccion(direccion)
+                + "\n% Velocidad en byte: " + muxVelocidad(porcentajeVelocidad));
         //Ejemplo forzado, la lista se puede desplegar en la GUI
-        cs.ecribirEnPuerto(puertosEncontrados[0],datos);
-        //Aquí después se cerrará el puerto (?)
+        /*cs.ecribirEnPuerto(puertoDestino, datos);*/
+    }
+
+    @FXML
+    private void identificarPuertos(ActionEvent event) {
+        ObservableList<String> items = FXCollections.observableArrayList();
+        String[] puertos = cs.obtenerPuertosDisponibles();
+        if (puertos.length != 0) {
+            puertosEstado.setText("Puertos diponibles");
+            for (int i = 0; i < cs.obtenerPuertosDisponibles().length; i++) {
+                items.add(cs.obtenerPuertosDisponibles()[i]);
+            }
+            comboBoxPuertosDisponibles.setItems(items);
+            comboBoxPuertosDisponiblesEscuchar.setItems(items);
+            comboBoxPuertosDisponibles.setDisable(false);
+            comboBoxPuertosDisponiblesEscuchar.setDisable(false);
+        } else {
+            puertosEstado.setText("No se encontraron puertos");
+            comboBoxPuertosDisponibles.setDisable(true);
+            comboBoxPuertosDisponiblesEscuchar.setDisable(true);
+        }
+    }
+
+    @FXML
+    public void leerDatosDePuertoSeleccionado() {
+        byte[] datosRecibidos = cs.leerDePuerto(puertoLectura);
+        String s = "";
+        if (datosRecibidos != null) {
+            for (int i = 0; i < datosRecibidos.length - 1; i++) {
+                System.out.println("\n" + datosRecibidos[i]);
+                s.concat(String.valueOf(datosRecibidos[i]) + " ");
+            }
+            labelDatosLeidos.setAlignment(Pos.CENTER);
+            labelDatosLeidos.setText(s);
+        } else {
+            labelDatosLeidos.setAlignment(Pos.CENTER);
+            labelDatosLeidos.setText("Puerto ocupado o cerrado");
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        puertosEstado.setAlignment(Pos.CENTER);
+        labelPuertoElegido.setAlignment(Pos.CENTER);
         llenarComboDireccion();
         llenarComboVelocidad();
+        comboBoxPuertosDisponibles.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                puertoDestino = cs.crearInstanciaPuertoConNombre(newValue);
+                labelPuertoElegido.setText(newValue);
+            }
+        });
+        comboBoxPuertosDisponiblesEscuchar.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                puertoLectura = cs.crearInstanciaPuertoConNombre(newValue);
+                escuchandoPuertoLabel.setText(newValue);
+            }
+        });
     }
 
     public void llenarComboDireccion() {
@@ -118,5 +182,4 @@ public class FXMLDocumentController implements Initializable {
 //        }
 //        return data;
 //    }
-
 }

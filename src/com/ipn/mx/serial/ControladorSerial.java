@@ -14,16 +14,32 @@ public class ControladorSerial {
         return SerialPortList.getPortNames();
     }
 
-    public void ecribirEnPuerto(String nombrePuerto, byte[]datos) {
-        SerialPort serialPort = new SerialPort(nombrePuerto);
+    public void ecribirEnPuerto(SerialPort puerto, byte[] datos) {
         try {
-            serialPort.openPort(); //Open serial port
-            serialPort.setParams(9600, 8, 1, 0); //Set params.
-            serialPort.writeBytes("This is a test string".getBytes());//Write data to port
-            serialPort.closePort();//Close serial port
+            puerto.openPort(); //Open serial port
+            puerto.setParams(9600, 8, 1, 0); //Set params.
+            puerto.writeBytes("This is a test string".getBytes());//Write data to port
+            puerto.closePort();//Close serial port
         } catch (SerialPortException ex) {
             System.out.println(ex);
         }
+    }
+
+    public byte[] leerDePuerto(SerialPort puerto) {
+        try {
+            puerto.openPort(); //Open serial port
+            puerto.setParams(9600, 8, 1, 0); //Set params.
+            byte[] buffer = puerto.readBytes(10); //Read 10 bytes from serial port
+            puerto.closePort(); //Close serial port
+            return buffer;
+        } catch (SerialPortException ex) {
+            System.out.println(ex);
+            return null;
+        }
+    }
+
+    public SerialPort crearInstanciaPuertoConNombre(String nombre) {
+        return new SerialPort(nombre);
     }
 
 }
