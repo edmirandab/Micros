@@ -1,0 +1,5 @@
+Librería: https://code.google.com/archive/p/java-simple-serial-connector/
+Ejemplos librería: https://code.google.com/archive/p/java-simple-serial-connector/wikis/jSSC_examples.wiki
+Links extra: 
+  https://stackoverflow.com/questions/35713896/listening-a-port-constantly
+  https://stackoverflow.com/questions/31248890/how-do-i-write-a-sequence-of-bytes-to-a-serial-port-in-java
