@@ -18,6 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import jssc.SerialPort;
+import jssc.SerialPortException;
 
 /**
  *
@@ -58,6 +59,8 @@ public class FXMLDocumentController implements Initializable {
     private Label escuchandoPuertoLabel;
     @FXML
     private Label datosAEnviar;
+    @FXML
+    private Label textoTitulo;
 
     @FXML
     private void enviarDatosAPuerto(ActionEvent event) {
@@ -99,12 +102,14 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    public void leerDatosDePuertoSeleccionado() {
+    public void leerDatosDePuertoSeleccionado() throws SerialPortException {
+        puertoLectura.openPort();
+        System.out.println("\nCTS: " + puertoLectura.isCTS() + " DSR: " + puertoLectura.isDSR());
         byte[] datosRecibidos = cs.leerDePuerto(puertoLectura);
         String s = "";
         if (datosRecibidos != null) {
             for (int i = 0; i < datosRecibidos.length - 1; i++) {
-                System.out.println("\n" + datosRecibidos[i]);
+                System.out.println("\n" + (byte)datosRecibidos[i]);
                 s.concat(String.valueOf(datosRecibidos[i]) + " ");
             }
             labelDatosLeidos.setAlignment(Pos.CENTER);
