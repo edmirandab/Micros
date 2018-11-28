@@ -1,0 +1,52 @@
+#botonPuertosDisponibles {
+    -fx-background-color: rgb(102, 0, 51);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+#botonLeerPuerto {
+    -fx-background-color: rgb(102, 0, 51);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+#boton1 {
+    -fx-background-color: rgb(102, 0, 51);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+#AnchorPane {
+    -fx-background-color: rgb(242, 242, 242);
+    -fx-text-fill: white;
+    /*-fx-opacity: .50;*/
+}
+#comboBoxPuertosDisponibles .list-cell:hover{
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    /*    -fx-opacity: .4;*/
+}
+#comboBoxPuertosDisponibles .cell:selected{
+    -fx-background-color: rgb(102, 0, 51);
+    -fx-text-fill: white;
+}
+#comboBoxPuertosDisponiblesEscuchar .list-cell:hover{
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    /*    -fx-opacity: .4;*/
+}
+#comboBoxPuertosDisponiblesEscuchar .cell:selected{
+    -fx-background-color: rgb(102, 0, 51);
+    -fx-text-fill: white;
+}
+#tf_RPM .list-cell:hover{
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+#tf_RPM .cell:selected{
+    -fx-background-color: rgb(102, 0, 51);
+    -fx-text-fill: white;
+}
+#textoTitulo { 
+    -fx-font-size: 16px;
+    -fx-font-family: "Arial";
+    -fx-fill: #818181;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
