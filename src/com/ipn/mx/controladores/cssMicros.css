@@ -2,16 +2,19 @@
     -fx-background-color: rgb(102, 0, 51);
     -fx-text-fill: white;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Century Gothic";
 }
 #botonLeerPuerto {
     -fx-background-color: rgb(102, 0, 51);
     -fx-text-fill: white;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Century Gothic";
 }
 #boton1 {
     -fx-background-color: rgb(102, 0, 51);
     -fx-text-fill: white;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Century Gothic";
 }
 #AnchorPane {
     -fx-background-color: rgb(242, 242, 242);

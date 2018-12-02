@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="539.0" prefWidth="532.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ipn.mx.controladores.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="539.0" prefWidth="494.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ipn.mx.controladores.FXMLDocumentController">
     <children>
         <Button id="boton1" fx:id="botonTransferir" layoutX="293.0" layoutY="428.0" onAction="#enviarDatosAPuerto" prefHeight="56.0" prefWidth="169.0" text="Enviar datos al puerto" textAlignment="CENTER">
          <font>

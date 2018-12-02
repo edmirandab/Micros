@@ -61,6 +61,8 @@ public class FXMLDocumentController implements Initializable {
     private Label datosAEnviar;
     @FXML
     private Label textoTitulo;
+    
+    private Thread hiloLectura;
 
     @FXML
     private void enviarDatosAPuerto(ActionEvent event) {
@@ -77,8 +79,7 @@ public class FXMLDocumentController implements Initializable {
         }
         datosAEnviar.setText("Dirección en byte: " + muxDireccion(direccion)
                 + "\n% Velocidad en byte: " + muxVelocidad(porcentajeVelocidad));
-        //Ejemplo forzado, la lista se puede desplegar en la GUI
-        /*cs.ecribirEnPuerto(puertoDestino, datos);*/
+        cs.ecribirEnPuerto(puertoDestino, datos);
     }
 
     @FXML
@@ -103,21 +104,25 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     public void leerDatosDePuertoSeleccionado() throws SerialPortException {
-        puertoLectura.openPort();
-        System.out.println("\nCTS: " + puertoLectura.isCTS() + " DSR: " + puertoLectura.isDSR());
-        byte[] datosRecibidos = cs.leerDePuerto(puertoLectura);
-        String s = "";
-        if (datosRecibidos != null) {
-            for (int i = 0; i < datosRecibidos.length - 1; i++) {
-                System.out.println("\n" + (byte)datosRecibidos[i]);
-                s.concat(String.valueOf(datosRecibidos[i]) + " ");
-            }
-            labelDatosLeidos.setAlignment(Pos.CENTER);
-            labelDatosLeidos.setText(s);
-        } else {
-            labelDatosLeidos.setAlignment(Pos.CENTER);
-            labelDatosLeidos.setText("Puerto ocupado o cerrado");
-        }
+//        hiloLectura = new Thread();
+//        hiloLectura.start();
+//        while(hiloLectura.isAlive()) {
+//            
+//        }
+//        byte[] datosRecibidos = cs.leerDePuerto(puertoLectura);
+//        String s = "";
+//        if (datosRecibidos != null) {
+//            for (int i = 0; i < datosRecibidos.length - 1; i++) {
+//                System.out.println("\n" + (byte) datosRecibidos[i]);
+//                s.concat(String.valueOf(datosRecibidos[i]) + " ");
+//            }
+//            labelDatosLeidos.setAlignment(Pos.CENTER);
+//            labelDatosLeidos.setText(s);
+//        } else {
+//            labelDatosLeidos.setAlignment(Pos.CENTER);
+//            labelDatosLeidos.setText("Puerto ocupado o cerrado");
+//        }
+            cs.abrirPuerto(puertoLectura);
     }
 
     @Override
