@@ -18,8 +18,8 @@ public class ControladorSerial {
         try {
             puerto.openPort(); //Open serial port
             puerto.setParams(9600, 8, 1, 0); //Set params.
-            puerto.writeBytes("This is a test string".getBytes());//Write data to port
-            puerto.closePort();//Close serial port
+            puerto.writeBytes(datos);//Write data to port
+//            puerto.closePort();//Close serial port
         } catch (SerialPortException ex) {
             System.out.println(ex);
         }
@@ -29,13 +29,17 @@ public class ControladorSerial {
         try {
             puerto.openPort(); //Open serial port
             puerto.setParams(9600, 8, 1, 0); //Set params.
-            byte[] buffer = puerto.readBytes(10); //Read 10 bytes from serial port
-            puerto.closePort(); //Close serial port
+            byte[] buffer = puerto.readBytes(1); //Read 10 bytes from serial port
+//            puerto.closePort(); //Close serial port
             return buffer;
         } catch (SerialPortException ex) {
             System.out.println(ex);
             return null;
         }
+    } 
+    
+    public void abrirPuerto(SerialPort puerto) throws SerialPortException{
+        puerto.openPort();
     }
 
     public SerialPort crearInstanciaPuertoConNombre(String nombre) {
